@@ -21,9 +21,9 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
-    private val viewModel: LoginViewModel by viewModels{LoginViewModelFactory()}
-    private var email : String = "android.developer@timetonic.com"
-    private var pwd : String = "Android.developer1"
+    private val viewModel: LoginViewModel by viewModels { LoginViewModelFactory() }
+    private var email: String = ""
+    private var pwd: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,13 +39,13 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-        viewModel.state.observe(this){
+        viewModel.state.observe(this) {
             binding.progress.isVisible = it.loading
             it.error?.let {
                 Toast.makeText(applicationContext, "Error: $it", Toast.LENGTH_SHORT).show()
             }
             it.success?.let {
-                if(it == "ok") {
+                if (it == "ok") {
                     Intent(this@LoginActivity, MainActivity::class.java).let {
                         startActivity(it)
                         finish()
@@ -55,7 +55,14 @@ class LoginActivity : AppCompatActivity() {
         }
 
         binding.loginBtn.setOnClickListener {
-            viewModel.login(email, pwd)
+            email = binding.email.toString()
+            pwd = binding.pwd.toString()
+            if(email.isNotEmpty() && pwd.isNotEmpty()){
+                viewModel.login(email, pwd)
+            }else{
+                Toast.makeText(applicationContext, "Error: Email and password are required", Toast.LENGTH_SHORT).show()
+            }
+
         }
     }
 }

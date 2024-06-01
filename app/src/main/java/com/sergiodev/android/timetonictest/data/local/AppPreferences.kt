@@ -11,7 +11,8 @@ object AppPreferences {
     private lateinit var sharedPreferences: SharedPreferences
 
     fun init(context: Context) {
-        sharedPreferences = context.getSharedPreferences("TimetonicPreferences", Context.MODE_PRIVATE)
+        sharedPreferences =
+            context.getSharedPreferences("TimetonicPreferences", Context.MODE_PRIVATE)
     }
 
     var sesskey: String
@@ -21,7 +22,6 @@ object AppPreferences {
     var userid: String
         get() = sharedPreferences.getString(PREF_USERID, "") ?: ""
         set(value) = sharedPreferences.edit().putString(PREF_USERID, value).apply()
-
 
 
 }

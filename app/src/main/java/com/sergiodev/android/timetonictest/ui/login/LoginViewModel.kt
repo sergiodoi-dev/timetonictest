@@ -26,7 +26,11 @@ class LoginViewModel : ViewModel() {
             val oauthkey = RemoteConnection.service.createOauthkey(appkey.appkey, email, pwd)
 
             if (oauthkey.status == "ok") {
-                val sesskey = RemoteConnection.service.createSesskey(oauthkey.oauthkey!!, oauthkey.o_u!!, oauthkey.o_u)
+                val sesskey = RemoteConnection.service.createSesskey(
+                    oauthkey.oauthkey!!,
+                    oauthkey.o_u!!,
+                    oauthkey.o_u
+                )
                 if (sesskey.status == "ok") {
                     AppPreferences.sesskey = sesskey.sesskey!!
                     AppPreferences.userid = oauthkey.o_u
@@ -41,7 +45,11 @@ class LoginViewModel : ViewModel() {
         }
     }
 
-    data class LoginState(val loading : Boolean = false, val error:String? = null, val success:String? = null)
+    data class LoginState(
+        val loading: Boolean = false,
+        val error: String? = null,
+        val success: String? = null
+    )
 
 }
 

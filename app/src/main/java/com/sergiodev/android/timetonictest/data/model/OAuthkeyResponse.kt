@@ -1,6 +1,6 @@
 package com.sergiodev.android.timetonictest.data.model
 
-data class OAuthkeyResponse (
+data class OAuthkeyResponse(
     val status: String,
     val oauthkey: String?,
     val error: String?,

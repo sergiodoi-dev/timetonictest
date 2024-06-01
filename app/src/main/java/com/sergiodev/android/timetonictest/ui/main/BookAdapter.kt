@@ -10,18 +10,25 @@ import com.sergiodev.android.timetonictest.R
 import com.sergiodev.android.timetonictest.data.model.Book
 import com.sergiodev.android.timetonictest.databinding.ItemBookBinding
 
-class BookAdapter(private val books: List<Book>): RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
+class BookAdapter(private val books: List<Book>) :
+    RecyclerView.Adapter<BookAdapter.BookViewHolder>() {
 
 
     class BookViewHolder(val binding: ItemBookBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(book: Book) {
             binding.book = book
-            Glide.with(itemView.context).load("https://timetonic.com${book.ownerPrefs.oCoverImg}").into(binding.bookImage)
+            Glide.with(itemView.context).load("https://timetonic.com${book.ownerPrefs.oCoverImg}")
+                .into(binding.bookImage)
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
-        val binding = DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_book, parent, false) as ItemBookBinding
+        val binding = DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            R.layout.item_book,
+            parent,
+            false
+        ) as ItemBookBinding
         return BookViewHolder(binding)
     }
 

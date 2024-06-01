@@ -1,6 +1,6 @@
 package com.sergiodev.android.timetonictest.data.model
 
-data class BooksResponse (
+data class BooksResponse(
     val status: String,
     val allBooks: AllBooks,
 )

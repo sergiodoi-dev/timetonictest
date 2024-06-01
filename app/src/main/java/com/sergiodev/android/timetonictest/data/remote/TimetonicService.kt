@@ -1,6 +1,7 @@
 package com.sergiodev.android.timetonictest.data.remote
 
 import com.sergiodev.android.timetonictest.data.model.AppKeyResponse
+import com.sergiodev.android.timetonictest.data.model.BooksResponse
 import com.sergiodev.android.timetonictest.data.model.OAuthkeyResponse
 import com.sergiodev.android.timetonictest.data.model.SesskeyResponse
 import retrofit2.http.POST
@@ -18,5 +19,9 @@ interface TimetonicService {
     suspend fun createSesskey(@Query("oauthkey") oauthkey: String,
                               @Query("o_u") o_u: String,
                               @Query("u_c") u_c: String) : SesskeyResponse
+    @POST("?req=getAllBooks&version=6.49q/6.49")
+    suspend fun getAllBooks(@Query("sesskey") sesskey: String,
+                            @Query("o_u") o_u: String,
+                            @Query("u_c") u_c: String) : BooksResponse
 
 }

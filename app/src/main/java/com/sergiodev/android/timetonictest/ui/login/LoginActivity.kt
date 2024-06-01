@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
 
                 if (oauthkey.status == "ok") {
                     val sesskey = RemoteConnection.service.createSesskey(oauthkey.oauthkey!!, oauthkey.o_u!!, oauthkey.o_u)
-                    Toast.makeText(applicationContext, "Error: ${sesskey.status}", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(applicationContext, "Status: ${sesskey.status}", Toast.LENGTH_SHORT).show()
                 } else {
                     Toast.makeText(applicationContext, "Error: ${oauthkey.error}", Toast.LENGTH_SHORT).show()
                 }

@@ -7,7 +7,7 @@ import retrofit2.http.POST
 import retrofit2.http.Query
 
 interface TimetonicService {
-    @POST("?req=createAppKey&appname=sergioordonez&version=1.47")
+    @POST("?req=createAppkey&appname=sergioordonez&version=6.49q/6.49")
     suspend fun createAppkey() : AppKeyResponse
 
     @POST("?req=createOauthkey&version=6.49q/6.49")

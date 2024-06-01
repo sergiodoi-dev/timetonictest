@@ -1,4 +1,4 @@
-package com.sergiodev.android.timetonictest.data
+package com.sergiodev.android.timetonictest.data.remote
 
 import com.sergiodev.android.timetonictest.data.model.AppKeyResponse
 import com.sergiodev.android.timetonictest.data.model.OAuthkeyResponse

@@ -1,5 +1,6 @@
 package com.sergiodev.android.timetonictest.ui.login
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -9,8 +10,10 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.sergiodev.android.timetonictest.R
-import com.sergiodev.android.timetonictest.data.RemoteConnection
+import com.sergiodev.android.timetonictest.data.local.AppPreferences
+import com.sergiodev.android.timetonictest.data.remote.RemoteConnection
 import com.sergiodev.android.timetonictest.databinding.ActivityLoginBinding
+import com.sergiodev.android.timetonictest.ui.main.MainActivity
 import kotlinx.coroutines.launch
 
 class LoginActivity : AppCompatActivity() {
@@ -41,7 +44,17 @@ class LoginActivity : AppCompatActivity() {
 
                 if (oauthkey.status == "ok") {
                     val sesskey = RemoteConnection.service.createSesskey(oauthkey.oauthkey!!, oauthkey.o_u!!, oauthkey.o_u)
-                    Toast.makeText(applicationContext, "Status: ${sesskey.status}", Toast.LENGTH_SHORT).show()
+                    if (sesskey.status == "ok") {
+                        AppPreferences.sesskey = sesskey.sesskey!!
+                        AppPreferences.userid = oauthkey.o_u
+
+                        Intent(this@LoginActivity, MainActivity::class.java).let {
+                            startActivity(it)
+                            finish()
+                        }
+                    } else {
+                        Toast.makeText(applicationContext, "Error: ${sesskey.error}", Toast.LENGTH_SHORT).show()
+                    }
                 } else {
                     Toast.makeText(applicationContext, "Error: ${oauthkey.error}", Toast.LENGTH_SHORT).show()
                 }

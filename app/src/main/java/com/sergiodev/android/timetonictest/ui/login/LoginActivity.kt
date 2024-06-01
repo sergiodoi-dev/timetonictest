@@ -4,9 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isVisible
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import com.sergiodev.android.timetonictest.R
@@ -19,6 +21,7 @@ import kotlinx.coroutines.launch
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityLoginBinding
+    private val viewModel: LoginViewModel by viewModels{LoginViewModelFactory()}
     private var email : String = "android.developer@timetonic.com"
     private var pwd : String = "Android.developer1"
 
@@ -36,29 +39,23 @@ class LoginActivity : AppCompatActivity() {
             insets
         }
 
-
-        binding.loginBtn.setOnClickListener {
-            lifecycleScope.launch {
-                val appkey = RemoteConnection.service.createAppkey()
-                val oauthkey = RemoteConnection.service.createOauthkey(appkey.appkey, email, pwd)
-
-                if (oauthkey.status == "ok") {
-                    val sesskey = RemoteConnection.service.createSesskey(oauthkey.oauthkey!!, oauthkey.o_u!!, oauthkey.o_u)
-                    if (sesskey.status == "ok") {
-                        AppPreferences.sesskey = sesskey.sesskey!!
-                        AppPreferences.userid = oauthkey.o_u
-
-                        Intent(this@LoginActivity, MainActivity::class.java).let {
-                            startActivity(it)
-                            finish()
-                        }
-                    } else {
-                        Toast.makeText(applicationContext, "Error: ${sesskey.error}", Toast.LENGTH_SHORT).show()
+        viewModel.state.observe(this){
+            binding.progress.isVisible = it.loading
+            it.error?.let {
+                Toast.makeText(applicationContext, "Error: $it", Toast.LENGTH_SHORT).show()
+            }
+            it.success?.let {
+                if(it == "ok") {
+                    Intent(this@LoginActivity, MainActivity::class.java).let {
+                        startActivity(it)
+                        finish()
                     }
-                } else {
-                    Toast.makeText(applicationContext, "Error: ${oauthkey.error}", Toast.LENGTH_SHORT).show()
                 }
             }
+        }
+
+        binding.loginBtn.setOnClickListener {
+            viewModel.login(email, pwd)
         }
     }
 }
